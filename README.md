@@ -16,3 +16,12 @@ et si on veut plonger dans du java (et des trains)
 - [tchou-tchou](https://blogs.infosupport.com/internet-of-lego-trains-part-3/)
 
 [labo lego avec debrief](https://urlab.be/events/171 "labo lego")
+
+
+# utiliser nxt-lego
+
+`Utiliser python 2.x !!`
+
+[Suivre ce tuto](https://github.com/Eelviny/nxt-python/wiki/Installation "tuto  nxt")
+
+Puis tester en lançant `python interface.py`
