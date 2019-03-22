@@ -31,12 +31,10 @@ def reward(state):
     return -1 if is_out(state) else 1
 
 
-s = socket.socket()          # Create a socket object
-host = socket.gethostname()  # Get local machine name
-s.bind((host, SERV_PORT))    # Bind to the port
-
-s.listen(1)
-nxt_sock, addr = s.accept()
+s = socket.socket()
+host = input()
+port = SERV_PORT
+s.connect((host, port))
 print("Connected to the bot! (hopefully)")
 
 

@@ -1,5 +1,5 @@
 import socket
-import utils
+from utils import SERV_PORT
 import pickle as p
 from nxt_raspi_interface import left, right, forward, back
 
@@ -22,11 +22,11 @@ def recv_action():
     return p.loads(action)
 
 
-s = socket.socket()
-host = input()
-port = utils.SERV_PORT
-
-s.connect((host, port))
+s = socket.socket()          # Create a socket object
+host = socket.gethostname()  # Get local machine name
+s.bind((host, SERV_PORT))    # Bind to the port
+s.listen(1)
+nxt_sock, addr = s.accept()
 
 
 while True:
