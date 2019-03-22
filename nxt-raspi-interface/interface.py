@@ -3,9 +3,21 @@
 import nxt.locator
 from time import sleep
 from nxt.motor import *
+from SimpleCV import Image, Camera
+import datetime
 
 FORTH = 100
 BACK = -100
+
+def take_pic():
+    cam = Camera()
+    img = cam.getImage()
+    now = datetime.datetime.now()
+    path = '{}-{}-{}-{}-{}-{}'.format(now.year, now.month, now.day, now.hour, now.minute, now.second)
+    path += ".jpg"
+    img.save(path)
+    return path
+
 
 def left(b):
     m_left = Motor(b, PORT_B)
@@ -32,8 +44,12 @@ def back(b):
     legs[0].idle()
     legs[1].idle()
 
-b = nxt.locator.find_one_brick()
-forward(b)
-back(b)
-left(b)
-right(b)
+if __name__ == '__main__':
+
+    """b = nxt.locator.find_one_brick()
+    forward(b)
+    back(b)
+    left(b)
+    right(b)"""
+    path = take_pic()
+    print path
