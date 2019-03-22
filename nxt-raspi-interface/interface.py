@@ -9,6 +9,7 @@ import datetime
 FORTH = 100
 BACK = -100
 
+
 def take_pic():
     cam = Camera()
     img = cam.getImage()
@@ -23,9 +24,11 @@ def left(b):
     m_left = Motor(b, PORT_B)
     m_left.turn(100, 15)
 
+
 def right(b):
     m_right = Motor(b, PORT_C)
     m_right.turn(-100, 15)
+
 
 def forward(b):
     legs = [Motor(b, PORT_B), Motor(b, PORT_C)]
@@ -35,6 +38,7 @@ def forward(b):
     sleep(1)
     legs[0].idle()
     legs[1].idle()
+
 
 def back(b):
     legs = [Motor(b, PORT_B), Motor(b, PORT_C)]
