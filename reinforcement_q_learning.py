@@ -171,7 +171,8 @@ class ReplayMemory(object):
 #
 # .. math::
 #
-#    \mathcal{L} = \frac{1}{|B|}\sum_{(s, a, s', r) \ \in \ B} \mathcal{L}(\delta)
+#    \mathcal{L} = \frac{1}{|B|}\sum_{(s, a, s', r) \
+#                    \in \ B} \mathcal{L}(\delta)
 #
 # .. math::
 #
@@ -187,8 +188,8 @@ class ReplayMemory(object):
 # difference between the current and previous screen patches. It has two
 # outputs, representing :math:`Q(s, \mathrm{left})` and
 # :math:`Q(s, \mathrm{right})` (where :math:`s` is the input to the
-# network). In effect, the network is trying to predict the *expected return* of
-# taking each action given the current input.
+# network). In effect, the network is trying to predict the *expected return*
+# of taking each action given the current input.
 #
 
 class DQN(nn.Module):
@@ -301,8 +302,8 @@ def optimize_model():
     # Compute V(s_{t+1}) for all next states.
     # Expected values of actions for non_final_next_states are computed based
     # on the "older" target_net; selecting their best reward with max(1)[0].
-    # This is merged based on the mask, such that we'll have either the expected
-    # state value or 0 in case the state was final.
+    # This is merged based on the mask, such that we'll have either the
+    # expected state value or 0 in case the state was final.
     next_state_values = torch.zeros(BATCH_SIZE, device=device)
     next_state_values[non_final_mask] = target_net(non_final_next_states).max(1)[0].detach()
     # Compute the expected Q values
@@ -322,6 +323,7 @@ def optimize_model():
 def target_update(episode):
     if episode % TARGET_UPDATE == 0:
         target_net.load_state_dict(policy_net.state_dict())
+
 
 policy_net = DQN(CAM_RESOLUTION[0], CAM_RESOLUTION[1]).to(device)
 target_net = DQN(CAM_RESOLUTION[0], CAM_RESOLUTION[1]).to(device)
