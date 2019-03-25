@@ -13,7 +13,7 @@ episode_durations = []
 def get_bot_state():
     # note: nxt bot should have transformed image to gray before sending it
     global nxt_sock
-    data = nxt_sock.recv(4096)
+    data = nxt_sock.recv(2**18)  # just to be sure
     return p.loads(data)
 
 
@@ -32,44 +32,40 @@ def reward(state):
 
 
 s = socket.socket()
-host = input()
+print("Connecting to the bot...")
+host = input("Please enter the bot's IP: ")
 port = SERV_PORT
+print("Using port ", port)
 s.connect((host, port))
-print("Connected to the bot! (hopefully)")
+print("Connected to the bot! (hopefully) at ", host, ":", port)
 
 
+bot_state, ground = get_bot_state()
+action = rql.select_action(bot_state)
+send_action(action)
 while True:
     # Initialize the environment and state
-    # TODO: Understand why this was done in the first place
-    state = current_screen - last_screen
     for t in count():
-        print("Current length of episode: ", t)
-        print("Overall length of episode: ", end='')
-        for episode in episode_durations:
-            print(episode, end=", ")
-        print()
-        # Select and perform an action
-        action = rql.select_action(state)
-        send_action(action)
-        bot_state = get_bot_state()
-        reward = torch.tensor([reward(bot_state)], device=rql.device)
+        print("Current length of episode: ", t+1)
 
-        # Observe new state
-        done = is_out(bot_state)
-        if not done:
-            next_state = current_screen - last_screen
+        # Select and perform an action
+        prev_state = bot_state
+        bot_state, ground = get_bot_state()
+        reward = torch.tensor([reward(ground)], device=rql.device)
+        done = is_out(ground)
+        if done:
+            send_action(3)
         else:
-            next_state = None
+            action = rql.select_action(bot_state)
+            send_action(action)
 
         # Store the transition in memory
-        rql.memory.push(state, action, next_state, reward)
-
-        # Move to the next state
-        state = next_state
+        rql.memory.push(prev_state, action, bot_state, reward)
 
         # Perform one step of the optimization (on the target network)
         rql.optimize_model()
         if done:
             episode_durations.append(t + 1)
             break
-        rql.target_update()
+
+    rql.target_update()

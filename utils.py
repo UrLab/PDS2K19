@@ -1,11 +1,11 @@
-from PIL import Image
 import numpy as np
 
-CAM_RESOLUTION = (1080, 720)
-SERV_PORT = 8000
+SERV_PORT = 4242
+IMG_DIM = (540, 360)
 
 
-def normalize_rgb(rgb_image: Image):
-    gray = rgb_image.convert('L')
+def normalize_img(rgb_image):
+    img = rgb_image.scale(IMG_DIM[0], IMG_DIM[1])
+    gray = img.getGrayNumpy()
     bw = gray.point(lambda x: -1 if x < 128 else 1, '1')
     return np.array(bw)

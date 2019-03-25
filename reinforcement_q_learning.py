@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
-from utils import CAM_RESOLUTION
+from utils import IMG_DIM
 """
+Code adapted for UrLab PDS 2k19 from:
+
 Reinforcement Learning (DQN) Tutorial
 =====================================
 **Author**: `Adam Paszke <https://github.com/apaszke>`_
@@ -210,8 +212,6 @@ class DQN(nn.Module):
         convw = conv2d_size_out(conv2d_size_out(conv2d_size_out(w)))
         convh = conv2d_size_out(conv2d_size_out(conv2d_size_out(h)))
         linear_input_size = convw * convh * 32
-        self.lin1 = nn.Linear(linear_input_size, linear_input_size)
-        self.lin2 = nn.Linear(linear_input_size, linear_input_size)
         self.head = nn.Linear(linear_input_size, 3)
 
     # Called with either one element to determine next action, or a batch
@@ -220,8 +220,7 @@ class DQN(nn.Module):
         x = F.relu(self.bn1(self.conv1(x)))
         x = F.relu(self.bn2(self.conv2(x)))
         x = F.relu(self.bn3(self.conv3(x)))
-        x = F.relu(self.lin1(x))
-        x = F.rela(self.lin2(x))
+        x = F.relu(self.lin(x))
         return self.head(x.view(x.size(0), -1))
 
 
@@ -325,8 +324,8 @@ def target_update(episode):
         target_net.load_state_dict(policy_net.state_dict())
 
 
-policy_net = DQN(CAM_RESOLUTION[0], CAM_RESOLUTION[1]).to(device)
-target_net = DQN(CAM_RESOLUTION[0], CAM_RESOLUTION[1]).to(device)
+policy_net = DQN(IMG_DIM[0], IMG_DIM[1]).to(device)
+target_net = DQN(IMG_DIM[0], IMG_DIM[1]).to(device)
 target_net.load_state_dict(policy_net.state_dict())
 target_net.eval()
 
