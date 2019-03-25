@@ -1,6 +1,6 @@
 import numpy as np
 
-SERV_PORT = 4242
+SERV_PORT = 9090
 IMG_DIM = (540, 360)
 
 
