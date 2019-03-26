@@ -31,12 +31,12 @@ def reward(state):
     return -1 if is_out(state) else 1
 
 
-s = socket.socket()
+nxt_sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 print("Connecting to the bot...")
 host = input("Please enter the bot's IP: ")
 port = SERV_PORT
 print("Using port ", port)
-s.connect((host, port))
+nxt_sock.connect((host, port))
 print("Connected to the bot! (hopefully) at ", host, ":", port)
 
 
