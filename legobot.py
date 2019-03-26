@@ -5,6 +5,7 @@ from nxtinterface.interface import Interface
 
 
 interface = Interface()
+print("Connected to the nxt bot!")
 actions = [interface.forward, interface.left, interface.right, interface.back]
 
 
@@ -29,8 +30,7 @@ def recv_action():
 
 
 s = socket.socket()          # Create a socket object
-host = socket.gethostname()  # Get local machine name
-s.bind((host, SERV_PORT))    # Bind to the port
+s.bind(('', SERV_PORT))    # Bind to the port
 s.listen(1)
 nxt_sock, addr = s.accept()
 
