@@ -1,10 +1,11 @@
 import socket
 from utils import SERV_PORT
 import pickle as p
-from nxtinterface.interface import Interface
+from nxt_raspi_interface.interface import Interface
 
 
 interface = Interface()
+print("Connected to the nxt")
 actions = [interface.forward, interface.left, interface.right, interface.back]
 
 
@@ -12,7 +13,7 @@ def get_state():
     global interface
     img = interface.take_pic()
     # TODO
-    ground = None  # This should allow to determine whether we are on track
+    ground = interface.touch_sensor()
     # TODO
     return (img, ground)
 
@@ -28,9 +29,8 @@ def recv_action():
     return p.loads(action)
 
 
-s = socket.socket()          # Create a socket object
-host = socket.gethostname()  # Get local machine name
-s.bind((host, SERV_PORT))    # Bind to the port
+s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)          # Create a socket object
+s.bind(('', SERV_PORT))    # Bind to the port
 s.listen(1)
 nxt_sock, addr = s.accept()
 
