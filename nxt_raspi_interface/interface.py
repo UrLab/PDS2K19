@@ -5,7 +5,8 @@ from time import sleep
 from nxt.motor import *
 from SimpleCV import Image, Camera
 import datetime
-from utils import normalize_img
+#from utils import normalize_img
+from nxt.sensor import *
 
 FORTH = 100
 BACK = -100
@@ -58,3 +59,10 @@ class Interface(object):
         sleep(1)
         legs[0].idle()
         legs[1].idle()
+
+    def touch_sensors(self):
+        touch = Touch(self.b, PORT_1).get_sample()
+        return touch
+
+    def light_sensors(self):
+        ight = Light(self.b, PORT_4).get_sample()
