@@ -13,7 +13,10 @@ episode_durations = []
 def get_bot_state():
     # note: nxt bot should have transformed image to gray before sending it
     global nxt_sock
-    data = nxt_sock.recv(2**18)  # just to be sure
+    data = ""
+    d_len = p.loads(nxt_sock.recv(32))
+    while d_len > data:
+        data += nxt_sock.recv(d_len)
     return p.loads(data)
 
 

@@ -20,7 +20,11 @@ def get_state():
 
 def send_state(state):
     global s
-    s.send(p.dumps(state))
+    data = p.dumps(state)
+    d_len = len(data)
+    s.send(p.dumps(d_len))
+    while d_len:
+        d_len -= s.send(data[len(data) - d_len:])
 
 
 def recv_action():
