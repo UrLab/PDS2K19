@@ -22,7 +22,7 @@ class Interface(object):
     def take_pic(self):
         img = self.cam.getImage()
         return normalize_img(img)
-        
+
     def save_img(self, img):
         now = datetime.datetime.now()
         path = '{}-{}-{}-{}-{}-{}'.format(now.year, now.month, now.day,
@@ -65,4 +65,5 @@ class Interface(object):
         return touch
 
     def light_sensors(self):
-        ight = Light(self.b, PORT_4).get_sample()
+        light = Light(self.b, PORT_4).get_sample()
+        return light
